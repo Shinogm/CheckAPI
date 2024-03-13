@@ -1,6 +1,7 @@
 from app.services.fastapi import App
 from app.models.static_dir import StaticDir
 from app.routers.router import users
+
 def main():
     app = App(
     routers=[
