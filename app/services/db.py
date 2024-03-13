@@ -1,7 +1,7 @@
 from mysqlclientpy import DB
 from app.utils.env import Env
 
-colina_db = DB(
+check_db = DB(
     database=Env.get_secure('NAME_DB'),
     host=Env.get_secure('HOST_DB'),
     password=Env.get_secure('PASS_DB'),
