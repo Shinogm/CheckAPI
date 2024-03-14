@@ -13,7 +13,7 @@ async def scan_finger(range_int: int | None = None):
     print(f"{device_count} devices found")
     zkfp2.OpenDevice(0)
     blob_image = None
-    for i in range(range_int or 3):
+    for i in range(range_int if range_int else 3):
         while True:
             zkfp2.Light('green', duration=10)
             capture = zkfp2.AcquireFingerprint()

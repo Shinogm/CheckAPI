@@ -41,7 +41,8 @@ async def create_worker_finger(user_id: int):
         'status': 'success',
         'message': 'Fingerprints registered successfully',
         'user': user_db,
-        'fingerprint': finger_user_db['fingerprint'],
+        #'fingerprint_cryp': bcrypt_finger.decode('utf-8'),
+        'fingerprint': finger_user_db['fingerprint']
     }
 
 
