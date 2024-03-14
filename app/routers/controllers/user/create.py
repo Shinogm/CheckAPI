@@ -12,7 +12,7 @@ async def create_user(user: User = Depends(User.as_form)):
                 'telefono': user.telefono,
                 'empresa': user.empresa,
                 'email': user.email,
-                'password': user.password if user.password else ''
+                'password': bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()) if user.password else ''
             }
         )
 
