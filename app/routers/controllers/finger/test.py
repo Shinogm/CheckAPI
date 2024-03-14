@@ -32,17 +32,18 @@ class FingerprintScanner:
 
     def capture_handler(self):
         try:
-            tmp, img = self.capture
-            fid, score = self.zkfp2.DBIdentify(tmp)
-            if fid:
-                self.logger.info(f"successfully identified the user: {fid}, Score: {score}, user: {self.user}")
-                self.zkfp2.Light('white')
-                self.capture = None
-                return
-            if self.register == False:
-                self.register = input("Do you want to register a new user? [y/n]: ").lower() == 'y'
-                if self.register == True:
-                    self.user = input("Enter the user name: ")
+            if self.capture is not None:
+                tmp, img = self.capture
+                fid, score = self.zkfp2.DBIdentify(tmp)
+                if fid:
+                    self.logger.info(f"successfully identified the user: {fid}, Score: {score}, user: {self.user}")
+                    self.zkfp2.Light('white')
+                    self.capture = None
+                    return
+                if self.register == False:
+                    self.register = input("Do you want to register a new user? [y/n]: ").lower() == 'y'
+                    if self.register == True:
+                        self.user = input("Enter the user name: ")
             if self.register: # registeration logic
                 if len(self.templates) < 3:
                     if not self.templates or self.zkfp2.DBMatch(self.templates[-1], tmp) > 0: # check if the finger is the same
