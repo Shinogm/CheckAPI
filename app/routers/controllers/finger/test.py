@@ -3,7 +3,7 @@ import logging
 from pyzkfp import ZKFP2
 from time import sleep
 from threading import Thread
-from app.services.db import check_db
+# Adaptar todo este codigo a la api y usar bd para guardar los datos
 
 sys.dont_write_bytecode = True  # don't create __pycache__
 
