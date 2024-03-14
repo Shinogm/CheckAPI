@@ -1,7 +1,7 @@
 from app.services.db import check_db
 from fastapi import HTTPException
 
-def verify_password(password: str, email: str):
+def verify_password( email: str, password: str):
     user_db = check_db.fetch_one(
         sql='SELECT * FROM users WHERE email = %s',
         params=(email,)
@@ -10,7 +10,7 @@ def verify_password(password: str, email: str):
         raise HTTPException(status_code=404, detail='User not found')
 
     user_db_all = check_db.fetch_one(
-        sql='SELECT BIN_TO_UUID(id) as id, name, email FROM users WHERE email = %s',
+        sql='SELECT id, created_at, name, domicilio, telefono, empresa, email FROM users WHERE email = %s',
         params=(email,)
     )
     try:
