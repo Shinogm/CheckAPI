@@ -24,10 +24,18 @@ CREATE TABLE users (
     empresa VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255),
-    fingerprint TEXT,
     PRIMARY KEY (id),
     UNIQUE KEY email (email),
     UNIQUE KEY name (name)
+);
+
+CREATE TABLE fingerprints (
+    id INT NOT NULL AUTO_INCREMENT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id INT NOT NULL,
+    fingerprint TEXT NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_fingerprint_user FOREIGN KEY (id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE user_perms (
@@ -39,4 +47,3 @@ CREATE TABLE user_perms (
     CONSTRAINT fk_user_perm_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT fk_user_perm_perm FOREIGN KEY (perm_id) REFERENCES permissions (id) ON DELETE CASCADE
 );
-

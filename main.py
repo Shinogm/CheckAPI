@@ -1,11 +1,12 @@
 from app.services.fastapi import App
 from app.models.static_dir import StaticDir
-from app.routers.router import users
+from app.routers.router import users, finger
 
 def main():
     app = App(
     routers=[
-        users.router
+        users.router,
+        finger.router
     ],
     static_dirs=[
         StaticDir(name='public', path='public')
