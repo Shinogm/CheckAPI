@@ -33,7 +33,7 @@ CREATE TABLE fingerprints (
     id INT NOT NULL AUTO_INCREMENT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id INT NOT NULL,
-    fingerprint TEXT NOT NULL,
+    fingerprint LONGTEXT NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_fingerprint_user FOREIGN KEY (id) REFERENCES users (id) ON DELETE CASCADE
 );
@@ -43,7 +43,6 @@ CREATE TABLE user_perms (
     user_id INT NOT NULL,
     perm_id INT NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY user_perm (user_id, perm_id),
     CONSTRAINT fk_user_perm_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT fk_user_perm_perm FOREIGN KEY (perm_id) REFERENCES permissions (id) ON DELETE CASCADE
 );

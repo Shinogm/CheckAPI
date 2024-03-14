@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Depends
 from app.models.user import User
 from app.services.db import check_db
-
+import bcrypt
 async def create_user(user: User = Depends(User.as_form)):
     try:
         user_id = check_db.insert(
@@ -15,6 +15,42 @@ async def create_user(user: User = Depends(User.as_form)):
                 'password': user.password if user.password else ''
             }
         )
+
+        get_user = check_db.fetch_one(
+            sql="SELECT * FROM users WHERE id = %s",
+            params=(user_id,)
+        )
+
+        if not get_user:
+            raise HTTPException(
+                status_code=404, 
+                detail='User not found'
+            )
+
+        if get_user['password'] and get_user:
+            user_permission = check_db.insert(
+                table='user_perms',
+                data={
+                    'user_id': user_id,
+                    'perm_id': 1
+                }
+            )
+
+        else:
+            user_permission = check_db.insert(
+                table='user_perms',
+                data={
+                    'user_id': user_id,
+                    'perm_id': 2
+                }
+            )
+
+        selec_user_all_data_and_perm_type = check_db.fetch_all(
+            sql="SELECT u.id, u.name, u.domicilio, u.telefono, u.empresa, u.email, p.name AS perm_type FROM users u INNER JOIN user_perms up ON u.id = up.user_id INNER JOIN permissions p ON up.perm_id = p.id WHERE u.id = %s",
+            params=(user_id,)
+        )
+
+
     except Exception as e:
         print(e)
         raise HTTPException(
@@ -22,10 +58,7 @@ async def create_user(user: User = Depends(User.as_form)):
             detail='An error occurred while creating the development.'
         )
     return {
-        'id': user_id,
-        'name': user.name,
-        'domicilio': user.domicilio,
-        'telefono': user.telefono,
-        'empresa': user.empresa,
-        'email': user.email
+        'status': 'success',
+        'message': 'User created successfully',
+        'user': selec_user_all_data_and_perm_type
     }
