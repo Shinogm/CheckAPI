@@ -1,3 +1,4 @@
+-- Active: 1710196960256@@127.0.0.1@3306
 DROP DATABASE IF EXISTS checador_db;
 
 CREATE DATABASE checador_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -34,8 +35,9 @@ CREATE TABLE fingerprints (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id INT NOT NULL,
     fingerprint LONGTEXT NOT NULL,
+    tmp BLOB NOT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT fk_fingerprint_user FOREIGN KEY (id) REFERENCES users (id) ON DELETE CASCADE
+    CONSTRAINT fk_fingerprint_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE user_perms (
