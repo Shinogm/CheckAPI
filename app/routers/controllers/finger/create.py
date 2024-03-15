@@ -1,8 +1,12 @@
 from fastapi import HTTPException, BackgroundTasks
 from app.services.db import check_db
+from pyzkfp import ZKFP2
 from app.routers.controllers.finger.scan import scan_finger
+import json
 
 async def create_worker_finger(user_id: int):
+    zkfp2 = ZKFP2()
+    zkfp2.Init()
 
     user_db = check_db.fetch_one(
         sql="SELECT * FROM users WHERE id = %s",
@@ -20,11 +24,14 @@ async def create_worker_finger(user_id: int):
 
     res = await scan_finger()
 
+    res['tmp'] = bytearray(res['tmp'])
+
     save_finger = check_db.execute(
-        sql = "INSERT INTO fingerprints (user_id, fingerprint) VALUES (%s, %s)",
+        sql = "INSERT INTO fingerprints (user_id, fingerprint, tmp) VALUES (%s, %s, %s)",
         params = (
             user_id,
-            res['fingerprints']
+            res['fingerprints'],
+            res['tmp']
         )
     )
     if not save_finger:
