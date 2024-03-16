@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from fastapi import Form
 from typing import Annotated
+
 class User(BaseModel):
     name: str
     domicilio: str
@@ -28,3 +29,27 @@ class User(BaseModel):
             password=password,
         )
         
+
+class ModifyUser(BaseModel):
+    name: str | None = None
+    domicilio: str | None = None
+    telefono: str | None = None
+    empresa: str | None = None
+    email: str | None = None
+
+    @classmethod
+    def as_form(
+        cls,
+        name: Annotated[str | None, Form(...)] = None,
+        domicilio: Annotated[str | None, Form(...)] = None,
+        telefono: Annotated[str | None, Form(...)] = None,
+        empresa: Annotated[str | None, Form(...)] = None,
+        email: Annotated[str | None, Form(...)] = None,
+    ):
+        return cls(
+            name=name,
+            domicilio=domicilio,
+            telefono=telefono,
+            empresa=empresa,
+            email=email,
+        )

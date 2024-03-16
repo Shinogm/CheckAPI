@@ -24,6 +24,7 @@ CREATE TABLE users (
     telefono VARCHAR(255) NOT NULL,
     empresa VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    horario VARCHAR(255),
     password VARCHAR(255),
     PRIMARY KEY (id),
     UNIQUE KEY email (email),

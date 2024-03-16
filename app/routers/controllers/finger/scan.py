@@ -1,6 +1,5 @@
 from pyzkfp import ZKFP2
-from fastapi import HTTPException, BackgroundTasks
-from app.services.db import check_db
+from fastapi import HTTPException
 import asyncio
 
 async def scan_finger(range_int: int | None = None):
@@ -23,14 +22,20 @@ async def scan_finger(range_int: int | None = None):
                 if capture:
                     print('fingerprint captured')
                     tmp, img = capture
-                    tmps.append(tmp)
-                    blob_image =    zkfp2.Blob2Base64String(img)
+                    if not tmps or zkfp2.DBMatch(tmps[-1], tmp) > 0:
+                        tmps.append(tmp)
+                        blob_image = zkfp2.Blob2Base64String(img)
+                    else:
+                        print('Different finger. Please enter the original finger!')
+                        print('Different finger. Please enter the original finger!')
+                        zkfp2.Light('red', duration=1)
+                        continue
 
                     await asyncio.sleep(0.5)
                     break
             except Exception as e:
                 print(e)
-                await asyncio.sleep(0.5)
+                raise HTTPException(status_code=500, detail='Error capturing fingerprint')
 
     regTemp, regTempLe = zkfp2.DBMerge(*tmps)
 
@@ -44,13 +49,11 @@ async def scan_finger(range_int: int | None = None):
     }
 
 
-
 '''
 async def main():
     res = await scan_finger()
 
 if __name__ == '__main__':
     asyncio.run(main())
+
 '''
-
-
