@@ -1,4 +1,4 @@
--- Active: 1710196960256@@127.0.0.1@3306
+-- Active: 1696921476499@@127.0.0.1@3306@checador_db
 DROP DATABASE IF EXISTS checador_db;
 
 CREATE DATABASE checador_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
