@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from app.services.db import check_db
 from app.routers.controllers.user.identify import indentity
+
 async def get_all_users():
     users_and_perm = check_db.fetch_all(
         sql='''
