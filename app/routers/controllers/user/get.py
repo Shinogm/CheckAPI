@@ -13,11 +13,11 @@ async def get_all_users():
                 u.empresa,
                 u.email,
                 p.name AS permission
-            FROM 
+            FROM
                 users AS u
-            JOIN 
+            JOIN
                 user_perms AS up ON u.id = up.user_id
-            JOIN 
+            JOIN
                 permissions AS p ON up.perm_id = p.id
             '''
     )
