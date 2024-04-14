@@ -20,6 +20,12 @@ async def create_user(user: User = Depends(User.as_form), hora: str | None = Non
             }
         )
 
+        if not user_id:
+            raise HTTPException(
+                status_code=500, 
+                detail='Error creating user_id'
+            )
+
 
         get_user = check_db.fetch_one(
             sql="SELECT * FROM users WHERE id = %s",
