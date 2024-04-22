@@ -28,7 +28,6 @@ CREATE TABLE users (
     password VARCHAR(255),
     PRIMARY KEY (id),
     UNIQUE KEY email (email),
-    UNIQUE KEY name (name)
 );
 
 CREATE TABLE fingerprints (
