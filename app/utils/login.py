@@ -23,8 +23,6 @@ def verify_password( email: str, password: str):
             }
         else:
             print(f"{user_db['password']} != {bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())}")
-            return {
-                'message': 'Password incorrect'
-            }
+            raise HTTPException(status_code=404, detail='Password incorrect')
     except:
         raise HTTPException(status_code=404, detail='User not found')
