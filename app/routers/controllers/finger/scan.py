@@ -1,8 +1,8 @@
 from pyzkfp import ZKFP2
-from fastapi import HTTPException
+from fastapi import HTTPException, BackgroundTasks
 import asyncio
 
-async def scan_finger(range_int: int | None = None):
+async def scan_finger(background_tasks: BackgroundTasks):
     zkfp2 = ZKFP2()
     zkfp2.Init()
 
@@ -13,7 +13,7 @@ async def scan_finger(range_int: int | None = None):
 
     tmps = []
 
-    for i in range(range_int if range_int else 3):
+    for i in range(3):
         while True:
             zkfp2.Light('green', duration=10)
 
@@ -27,8 +27,8 @@ async def scan_finger(range_int: int | None = None):
                         blob_image = zkfp2.Blob2Base64String(img)
                     else:
                         print('Different finger. Please enter the original finger!')
-                        print('Different finger. Please enter the original finger!')
                         zkfp2.Light('red', duration=1)
+                        background_tasks.add_task(handle_failed_capture)
                         continue
 
                     await asyncio.sleep(0.5)
@@ -47,6 +47,12 @@ async def scan_finger(range_int: int | None = None):
         'fingerprints': blob_image,
         'tmp': regTemp
     }
+
+def handle_failed_capture():
+    # Tarea a ejecutar cuando la captura del dedo falla
+    print('Fingerprint capture failed')
+    # Agregar aquí cualquier lógica adicional que necesites para manejar la falla de la captura del dedo
+
 
 
 '''
