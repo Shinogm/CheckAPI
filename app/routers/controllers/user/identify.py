@@ -23,10 +23,7 @@ async def indentity(range: int = 3):
     print(fingerprint_id, score)
 
     if fingerprint_id == 0 or score < 60:
-        return {
-            'status': 'error',
-            'message': 'Fingerprint not found',
-        }
+        raise Exception('Fingerprint not found')
     
     user = check_db.fetch_one(
         sql='''
