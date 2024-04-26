@@ -1,8 +1,8 @@
 from pyzkfp import ZKFP2
-from fastapi import HTTPException, BackgroundTasks
+from fastapi import HTTPException
 import asyncio
 
-async def scan_finger(background_tasks: BackgroundTasks):
+async def scan_finger(range_int: int | None = None):
     zkfp2 = ZKFP2()
     zkfp2.Init()
 
@@ -13,7 +13,7 @@ async def scan_finger(background_tasks: BackgroundTasks):
 
     tmps = []
 
-    for i in range(3):
+    for i in range(range_int if range_int else 3):
         while True:
             zkfp2.Light('green', duration=10)
 
@@ -28,7 +28,6 @@ async def scan_finger(background_tasks: BackgroundTasks):
                     else:
                         print('Different finger. Please enter the original finger!')
                         zkfp2.Light('red', duration=1)
-                        background_tasks.add_task(handle_failed_capture)
                         continue
 
                     await asyncio.sleep(0.5)
