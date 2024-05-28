@@ -4,12 +4,13 @@ from app.models.user import ModifyUser
 
 async def modify_user(user_id: int, user: ModifyUser = Depends(ModifyUser.as_form), hora: str | None = None, fecha: str | None = None):
     try:
-        pre_sql = f'Tu horario es el siguiente: de {hora} de los días {fecha}' if (hora and fecha) else 'No se ha establecido un horario.'
-
+        
         get_user = check_db.fetch_one(
             sql='SELECT id, name, email, domicilio, telefono, empresa, created_at, horario FROM users WHERE id = %s',
             params=(user_id,)
         )
+        pre_sql = f'Tu horario es el siguiente: de {hora} de los días {fecha}' if (hora and fecha) else get_user['horario']
+
         if not get_user:
             raise HTTPException(status_code=404, detail='User not found')
 
