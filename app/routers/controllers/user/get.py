@@ -104,5 +104,35 @@ async def get_horario_by_scan() -> Dict[str, Any]:
 
 
 
+async def get_user_by_email(email: str):
+    user = check_db.fetch_one(
+        sql='''
+            SELECT
+                u.id,
+                u.created_at,
+                u.name,
+                u.domicilio,
+                u.telefono,
+                u.empresa,
+                u.email,
+                p.name AS permission
+            FROM
+                users AS u
+            JOIN
+                user_perms AS up ON u.id = up.user_id
+            JOIN
+                permissions AS p ON up.perm_id = p.id
+            WHERE
+                u.email = %s
+            ''',
+        params=(email,)
+    )
 
+    if not user:
+        raise HTTPException(status_code=404, detail='User not found')
+    
+    return {
+        'status': 'success',
+        'user': user,
+    }
 

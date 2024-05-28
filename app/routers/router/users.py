@@ -11,6 +11,7 @@ router.post('/user/identify')(identify.indentity)
 router.get('/get')(get.get_all_users)
 router.get('/get/permissions/{perrm_id}')(get.get_all_user_by_perm_id)
 router.get('/get/horario')(get.get_horario_by_scan)
+router.get('/get/email')(get.get_user_by_email)
 
 router.put('/modify/{user_id}')(modify.modify_user)
 

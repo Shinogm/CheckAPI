@@ -1,0 +1,44 @@
+Table "permissions" {
+  "id" INT [pk, not null, increment]
+  "name" VARCHAR(255) [not null]
+
+Indexes {
+  name [unique, name: "name"]
+}
+}
+
+Table "users" {
+  "id" INT [pk, not null, increment]
+  "created_at" TIMESTAMP [not null, default: `CURRENT_TIMESTAMP`]
+  "name" VARCHAR(255) [not null]
+  "domicilio" VARCHAR(255) [not null]
+  "telefono" VARCHAR(255) [not null]
+  "empresa" VARCHAR(255) [not null]
+  "email" VARCHAR(255) [not null]
+  "horario" VARCHAR(255)
+  "password" VARCHAR(255)
+
+Indexes {
+  email [unique, name: "email"]
+}
+}
+
+Table "fingerprints" {
+  "id" INT [pk, not null, increment]
+  "created_at" TIMESTAMP [not null, default: `CURRENT_TIMESTAMP`]
+  "user_id" INT [not null]
+  "fingerprint" LONGTEXT [not null]
+  "tmp" BLOB [not null]
+}
+
+Table "user_perms" {
+  "id" INT [pk, not null, increment]
+  "user_id" INT [not null]
+  "perm_id" INT [not null]
+}
+
+Ref:"users"."id" < "fingerprints"."user_id" [delete: cascade]
+
+Ref:"users"."id" < "user_perms"."user_id" [delete: cascade]
+
+Ref:"permissions"."id" < "user_perms"."perm_id" [delete: cascade]
